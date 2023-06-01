@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fetch Students</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: "poppins", sans-serif;
+      }
+
+      body {
+        background-image: url("bc.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      section {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        opacity: 1;
+      }
+
+      .section h1 {
+        text-align: center;
+        font-size: 6rem;
+        font-family: "Cookie";
+        padding: 20px;
+        margin: 15px;
+        z-index: 1;
+        opacity: 1;
+        /* background-color: white; */
+        color: white;
+      }
+
+      .color-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: lightblue;
+        width: 100%;
+        height: 100vh;
+        opacity: 0;
+      }
+
+      @-webkit-keyframes flipiny {
+        0% {
+          opacity: 0;
+          -webkit-transform: perspective(400px) rotateY(0deg);
+          transform: perspective(400px) rotateY(90deg);
+        }
+        40% {
+          -webkit-transform: perspective(400px) rotateY(0deg);
+          transform: perspective(400px) rotateY(-10deg);
+        }
+        70% {
+          -webkit-transform: perspective(400px) rotateY(0deg);
+          transform: perspective(400px) rotateY(10deg);
+        }
+        100% {
+          opacity: 0.7;
+          -webkit-transform: perspective(400px) rotateY(0deg);
+          transform: perspective(400px) rotateY(0deg);
+        }
+      }
+
+      @keyframes flipiny {
+        0% {
+          opacity: 0;
+          transform: perspective(400px) rotateY(90deg);
+        }
+        40% {
+          transform: perspective(400px) rotateY(-10deg);
+        }
+        70% {
+          transform: perspective(400px) rotateY(10deg);
+        }
+        100% {
+          opacity: 0.7;
+          transform: perspective(400px) rotateY(0deg);
+        }
+      }
+
+      .form-box {
+        -webkit-animation: flipiny 2s ease 1s 1 normal;
+        -moz-animation: flipiny 2s ease 1s 1 normal;
+        -ms-animation: flipiny 2s ease 1s 1 normal;
+        animation: flipiny 2s ease 1s 1 normal;
+
+        position: relative;
+        width: 400px;
+        height: 700px;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        backdrop-filter: blur(15px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+        opacity: 0.7;
+        background: transparent;
+
+        -webkit-box-shadow: 0px 0px 50px 30px #ff0000;
+        -moz-box-shadow: 0px 0px 50px 30px #ff0000;
+        box-shadow: 0px 0px 20px 10px #40dad2c4;
+      }
+
+      h2 {
+        font-size: 2em;
+        color: #fff;
+        text-align: center;
+      }
+      .inputbox {
+        position: relative;
+        margin: 50px 0;
+        width: 310px;
+        border-bottom: 2px solid #fff;
+      }
+      .inputbox label {
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+        color: #fff;
+        font-size: 1em;
+        pointer-events: none;
+        transition: 0.5s;
+      }
+      input:focus ~ label,
+      input:valid ~ label {
+        top: -5px;
+      }
+      .inputbox input {
+        width: 100%;
+        height: 50px;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 1em;
+        padding: 0 35px 0 5px;
+        color: #fff;
+      }
+      .inputbox ion-icon {
+        position: absolute;
+        right: 8px;
+        color: #fff;
+        font-size: 1.2em;
+        top: 20px;
+      }
+      .forget {
+        margin-bottom: 30px;
+        font-size: 0.9em;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .forget label input {
+        margin-right: 3px;
+      }
+      .forget label a {
+        color: #fff;
+        text-decoration: none;
+      }
+      .forget label a:hover {
+        text-decoration: underline;
+      }
+      #result {
+        display: none;
+      }
+      button {
+        width: 100%;
+        height: 40px;
+        border-radius: 40px;
+        background: #fff;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      #reg {
+        color: blue;
+      }
+      .register {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-size: 0.9em;
+        color: #fff;
+        text-align: center;
+      }
+      .register p a {
+        text-decoration: none;
+        color: #fff;
+        font-weight: 600;
+      }
+      .register p a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <div class="form-box">
+        <div class="form-value">
+          <form action="find" method="GET" id="studentForm">
+            <h2>Registration</h2>
+
+            <div class="inputbox">
+              <ion-icon name="mail-outline"></ion-icon>
+              <input type="text" id="name" name="name" required />
+              <label for="">User name</label>
+            </div>
+
+            <div class="inputbox">
+              <ion-icon name="mail-outline"></ion-icon>
+              <input type="text" id="roll" name="roll" required />
+              <label for="">Security Id</label>
+            </div>
+            <div class="inputbox">
+              <ion-icon name="mail-outline"></ion-icon>
+              <input type="text" id="pass" name="pass" required />
+              <label for="">Security Pass</label>
+            </div>
+            <div class="inputbox">
+              <ion-icon name="mail-outline"></ion-icon>
+              <input type="text" id="city" name="city" required />
+              <label for="">City</label>
+            </div>
+
+            <button type="submit">Fetch</button>
+            <div class="register">
+              <p id="reg">
+                Already have a account
+                <a style="color: black" href="http://localhost:9090">Login</a>
+              </p>
+            </div>
+            <div class="register">
+              <p id="result"></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      $(document).ready(function () {
+        // When the form is submitted
+        $("#studentForm").submit(function (event) {
+          event.preventDefault(); // Prevent the default form submission
+
+          // Get the roll value from the input field
+          var roll = $("#roll").val();
+
+          // Make an AJAX request to fetch the student data
+          $.ajax({
+            url: "/find/" + roll,
+            type: "GET",
+            success: function (response) {
+              // Handle the successful response
+              $("#result").html(response);
+              try {
+                var studentData = JSON.parse(response);
+                var pass = document.getElementById("pass").value;
+                console.log(studentData);
+                if (
+                  studentData &&
+                  studentData.roll &&
+                  studentData.name &&
+                  studentData.city
+                ) {
+                  window.alert("User id is already taken");
+                } else {
+                  window.alert("User id is already taken");
+                }
+              } catch (error) {
+                console.log("Sorry" + error);
+              }
+            },
+            error: function (xhr, status, error) {
+              // Handle the error
+              console.log(error);
+              if (xhr.status === 500) {
+
+                register();
+              }
+            },
+          });
+        });
+      });
+
+      function register() {
+    	  var studentData = {
+                  name: $("#name").val(),
+                  roll: $("#roll").val(),
+                  pass: $("#pass").val(),
+                  city: $("#city").val()
+              };
+
+        $.ajax({
+          url: "/addStudent",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify(studentData),
+          success: function (response) {
+            // Handle the successful response
+            console.log("Registered successfully!");
+            console.log(response);
+            window.alert("Registered successfully!");
+            window.location.href = "http://localhost:9090";
+            // You can perform any additional actions or display a success message here
+          },
+          error: function (xhr, status, error) {
+            // Handle the error
+            console.log("Error inserting data: " + error);
+            // You can display an error message or perform any other error handling here
+          },
+        });
+      }
+    </script>
+  </body>
+</html>

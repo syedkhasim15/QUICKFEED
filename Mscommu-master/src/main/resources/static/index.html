@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Management</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    
+        // Function to search for a student by roll number
+        function searchStudentByRoll() {
+            var rollNumber = $("#rollNumber").val();
+
+            $.ajax({
+                url: "/search/" + rollNumber,
+                type: "GET",
+                success: function(response) {
+                    $("#searchResult").text(response);
+                }
+            });
+        }
+
+        // Function to find a student by roll number
+        function findStudentByRoll() {
+            var rollNumber = $("#rollNumber").val();
+
+            $.ajax({
+                url: "/find?roll=" + rollNumber,
+                type: "GET",
+                success: function(response) {
+                    $("#findResult").text(response);
+                }
+            });
+        }
+
+        // Function to find a student by name
+        function findStudentByName() {
+            var name = $("#name").val();
+
+            $.ajax({
+                url: "/find",
+                type: "POST",
+                data: name,
+                contentType: "text/plain",
+                success: function(response) {
+                    $("#findResult").text(response);
+                }
+            });
+        }
+
+        // Function to get all students
+        function getAllStudents() {
+            $.ajax({
+                url: "/all",
+                type: "GET",
+                success: function(response) {
+                    $("#allStudents").text(JSON.stringify(response));
+                }
+            });
+        }
+
+        // Function to add a student
+        function addStudent() {
+            var student = {
+                roll: $("#roll").val(),
+                name: $("#name").val(),
+                city: $("#city").val()
+            };
+
+            $.ajax({
+                url: "/add",
+                type: "POST",
+                data: JSON.stringify(student),
+                contentType: "application/json",
+                success: function(response) {
+                    $("#addResult").text(response);
+                }
+            });
+        }
+
+        // Function to delete a student by roll number
+        function deleteStudentByRoll() {
+            var rollNumber = $("#rollNumber").val();
+
+            $.ajax({
+                url: "/all/" + rollNumber,
+                type: "DELETE",
+                success: function(response) {
+                    $("#deleteResult").text(response);
+                }
+            });
+        }
+
+        // Function to update a student
+        function updateStudent() {
+            var student = {
+                roll: $("#roll").val(),
+                name: $("#name").val(),
+                city: $("#city").val()
+            };
+
+            $.ajax({
+                url: "/add",
+                type: "PUT",
+                data: JSON.stringify(student),
+                contentType: "application/json",
+                success: function(response) {
+                    $("#updateResult").text(response);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Student Management</h1>
+    <div>
+        <h2>Search Student by Roll Number</h2>
+        <input type="text" id="rollNumber" placeholder="Enter Roll Number">
+        <button onclick="searchStudentByRoll()">Search</button>
+        <p id="searchResult"></p>
+    </div>
+    <div>
+        <h2>Find Student by Roll Number</h2>
+        <input type="text" id="rollNumber" placeholder="Enter Roll Number">
+        <button onclick="findStudentByRoll()">Find</button>
+        <p

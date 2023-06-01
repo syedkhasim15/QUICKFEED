@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Insert title here</title>
+  </head>
+
+  <style>
+  
+  	body{
+  	 background-color: #000000db;
+  	}
+  	
+    .container {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+    }
+    .con{
+      text-align: center;
+      width: 700px;
+      padding: 20px;
+        background-color: rgb(252 255 253 / 25%);
+      margin-bottom: 30px;
+    }
+
+    .image{
+      border: 1px solid black;
+      margin-top: 30px;   
+      max-width: 600px;
+      max-height: 500px;
+      padding: 20px;
+      margin-bottom: 20PX;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      
+    }
+
+    .inner{
+      text-align:left;
+      padding: 20px;
+
+    }
+
+  </style>
+  <body>
+    <div class="container">
+      <div class="con">
+        <img
+          class="image"
+          th:src="@{${'/display?id=' + value}}"
+          alt="tech image"
+        />
+
+        <div class="inner">
+          <p>Date: <span th:text="${date}"></span></p> 
+          <p>Author: <span th:text="${name}"></span></p> 
+          <p th:text="${content}"></p> 
+          
+        
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
